@@ -84,3 +84,7 @@ License
 
 📝 This project is licensed under the MIT License.
 
+![Robot-waving-1](https://github.com/user-attachments/assets/61bfb974-d397-4b5b-9a06-627e9db79ba5)
+
+
+
