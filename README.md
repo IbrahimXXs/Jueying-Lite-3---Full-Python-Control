@@ -11,7 +11,7 @@ This repository provides full control over the Jueying Lite 3 Quadruped Robot us
 ✅ Modular script structure for easy customization
 ✅ Pre-built scripts for various robot actions
 
-# Project Structure
+# Structure
 
 📂 Scripts/
 
@@ -69,6 +69,8 @@ Modify and run scripts from the Scripts/ folder to perform different actions.
 Create your own custom scripts inside the Other/ folder.
 
 Call main.py to integrate all scripts into one execution.
+
+### Note: In order to send movement commands to the robot, you need to set it to navigation mode through the robot movement in main.py
 
 Contributing
 
