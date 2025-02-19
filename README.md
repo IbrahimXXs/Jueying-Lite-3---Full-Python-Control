@@ -33,35 +33,49 @@ This script serves as the main entry point for controlling the robot.
 1️⃣ Clone the Repository
 
 sh
-Copy
-Edit
-git clone https://github.com/IbrahimXXs/Jueying-Lite-3---Full-Python-Control.git
-cd Jueying-Lite-3---Full-Python-Control
-2️⃣ Install Dependencies
-Ensure you have Python installed, then install any required packages:
 
-sh
 Copy
+
 Edit
-pip install -r requirements.txt
+
+git clone https://github.com/IbrahimXXs/Jueying-Lite-3---Full-Python-Control.git
+
+cd Jueying-Lite-3---Full-Python-Control
+
+2️⃣ Install Dependencies
+
+Ensure you have Python installed, then install any required packages
+
 3️⃣ Connect to the Robot
 
 Establish a Wi-Fi or Ethernet connection with the robot.
+
 Update the connection settings in main.py if needed.
+
 4️⃣ Run the Main Script
 
 sh
+
 Copy
+
 Edit
+
 python main.py
+
 Usage
+
 Modify and run scripts from the Scripts/ folder to perform different actions.
+
 Create your own custom scripts inside the Other/ folder.
+
 Call main.py to integrate all scripts into one execution.
+
 Contributing
+
 🔹 Feel free to fork this repository and contribute by adding new features or improving existing ones.
 🔹 Pull requests are welcome!
 
 License
+
 📝 This project is licensed under the MIT License.
 
