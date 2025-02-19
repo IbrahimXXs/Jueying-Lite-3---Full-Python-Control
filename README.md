@@ -1,3 +1,6 @@
+
+![p111_](https://github.com/user-attachments/assets/ec2be9c1-9a4b-4715-98b0-6b941018a6e4)
+
 # Jueying Lite 3 Quadruped Robot - Full Python Control
 
 ## Overview
