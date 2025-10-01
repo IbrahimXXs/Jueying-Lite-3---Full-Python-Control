@@ -27,6 +27,33 @@ key_states = {
     'right': False
 }
 
+# --- Heartbeat loop ---
+def send_heartbeat(stop_event):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    heartbeat_code = 0x21040001
+    param1, param2 = 0, 0
+    payload = struct.pack('<3i', heartbeat_code, param1, param2)
+
+    try:
+        while not stop_event.is_set():
+            sock.sendto(payload, (MOTION_HOST_IP, MOTION_HOST_PORT))
+            time.sleep(0.1)  # every 100ms
+    finally:
+        sock.close()
+
+def send_stand_sit_command():
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        command_code = 0x21010202
+        param1, param2 = 0, 0
+        payload = struct.pack('<3i', command_code, param1, param2)
+        sock.sendto(payload, (MOTION_HOST_IP, MOTION_HOST_PORT))
+        print("Sent Stand/Sit command (toggle).")
+    except Exception as e:
+        print(f"Error sending Stand/Sit: {e}")
+    finally:
+        sock.close()
+
 # Function to send velocity commands
 def send_velocity_command(angular_velocity, linear_velocity_x, linear_velocity_y):
     try:
@@ -105,11 +132,14 @@ def on_press(key):
     try:
         if key.char in key_states:
             key_states[key.char] = True
+        elif key.char == 'b':  # Sit/Stand toggle
+            send_stand_sit_command()
     except AttributeError:
         if key == keyboard.Key.left:
             key_states['left'] = True
         elif key == keyboard.Key.right:
             key_states['right'] = True
+
 
 # Function to handle key release events
 def on_release(key):
@@ -127,6 +157,12 @@ def on_release(key):
 
 # Main function to control the robot
 def control_robot_with_keyboard():
+    # Start heartbeat in a separate thread
+    stop_event = threading.Event()
+    heartbeat_thread = threading.Thread(target=send_heartbeat, args=(stop_event,))
+    heartbeat_thread.daemon = True
+    heartbeat_thread.start()
+
     # Start the camera feed in a separate thread
     camera_thread = threading.Thread(target=access_wide_angle_camera)
     camera_thread.daemon = True
@@ -139,7 +175,12 @@ def control_robot_with_keyboard():
 
     # Start the keyboard listener
     with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+        try:
+            listener.join()
+        finally:
+            # Stop heartbeat cleanly when quitting
+            stop_event.set()
+            heartbeat_thread.join(timeout=1)
 
 if __name__ == "__main__":
     control_robot_with_keyboard()
