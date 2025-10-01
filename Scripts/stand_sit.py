@@ -9,13 +9,13 @@ def send_stand_sit_command():
     Sends the Stand/Sit toggle command.
     """
     command_code = 0x21010202
-    paramters_size = 0
-    command_type = 0
-    command_head = struct.pack('<III', command_code, paramters_size, command_type)
+    param1 = 0
+    param2 = 0
+    payload = struct.pack('<3i', command_code, param1, param2)  # signed int
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     try:
-        sock.sendto(command_head, (MOTION_HOST_IP, MOTION_HOST_PORT))
+        sock.sendto(payload, (MOTION_HOST_IP, MOTION_HOST_PORT))
         print("Stand/Sit Command sent.")
     except Exception as e:
         print(f"Error: {e}")

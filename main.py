@@ -2,35 +2,43 @@ from Scripts.wide_angle_camera import access_wide_angle_camera
 from Scripts.stand_sit import send_stand_sit_command
 from Scripts.stop_robot import send_stop_command
 from Scripts.reset_to_zero import send_reset_to_zero_command
+from Scripts.heartbeat import start_heartbeat
 
 def main():
-    while True:
-        print("\nRobot Control Menu:")
-        print("1. Wide-Angle Camera")
-        print("2. Stand/Sit")
-        print("3. STOP")
-        print("4. Reset to Zero")
-        print("5. Access Subcategories")
-        print("6. Exit")
-        print("\nDeveloped by: Ibrahim :)")
+    hb_thread, hb_stop = start_heartbeat()
 
-        choice = input("Select an option (1-6): ").strip()
+    try:
+        while True:
+            print("\nRobot Control Menu:")
+            print("1. Wide-Angle Camera")
+            print("2. Stand/Sit")
+            print("3. STOP")
+            print("4. Reset to Zero")
+            print("5. Access Subcategories")
+            print("6. Exit")
+            print("\nDeveloped by: Ibrahim :)")
 
-        if choice == "1":
-            access_wide_angle_camera()
-        elif choice == "2":
-            send_stand_sit_command()
-        elif choice == "3":
-            send_stop_command()
-        elif choice == "4":
-            send_reset_to_zero_command()
-        elif choice == "5":
-            access_subcategories()
-        elif choice == "6":
-            print("Exiting the Robot Control Program. Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please select a valid option.")
+            choice = input("Select an option (1-6): ").strip() 
+
+            if choice == "1":
+                access_wide_angle_camera()
+            elif choice == "2":
+                send_stand_sit_command()
+            elif choice == "3":
+                send_stop_command()
+            elif choice == "4":
+                send_reset_to_zero_command()
+            elif choice == "5":
+                access_subcategories()
+            elif choice == "6":
+                print("Exiting the Robot Control Program. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please select a valid option.")
+    finally:
+        # Stop heartbeat cleanly
+        hb_stop.set()
+        hb_thread.join(timeout=1)
 
 def access_subcategories():
     while True:
